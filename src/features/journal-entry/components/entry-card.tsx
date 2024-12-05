@@ -9,7 +9,7 @@ interface EntryCardProps {
 }
 export default function EntryCard({ id, entry }: EntryCardProps) {
   return (
-    <Link href={`/journal/${entry.id}`}>
+    <Link href={`/journal/${id}`}>
       <Card>
         <CardContent className="p-6">
           <div>
@@ -19,7 +19,7 @@ export default function EntryCard({ id, entry }: EntryCardProps) {
               </div>
               <div
                 className="text-violet-200 line-clamp-2"
-                dangerouslySetInnerHTML={{ __html: entry.content }}
+                dangerouslySetInnerHTML={{ __html: entry.content || "" }}
               />
             </div>
             <time>{format(new Date(entry.createdAt), "MMM d, yyyy")}</time>
