@@ -1,0 +1,156 @@
+"use client";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+  SelectContent,
+} from "@/components/ui/select";
+import { SelectEntry } from "@/drizzle/schema";
+import { MOODS } from "@/lib/constant";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { useCallback, useEffect, useState } from "react";
+import { format } from "date-fns";
+
+import React from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { CalendarIcon, PlusIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import EntryCard from "./entry-card";
+import Link from "next/link";
+
+interface JounalFiltersProps {
+  entries: SelectEntry[];
+}
+
+export default function JournalFilters({ entries }: JounalFiltersProps) {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [date, setDate] = useState<Date>();
+  const [filteredEntries, setFilteredEntries] = useState<SelectEntry[] | null>(
+    null,
+  );
+  const [selectMood, setSelectedMood] = useState<string>("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const handleClearFilters = useCallback(() => {
+    setSearchQuery("");
+    setDate(undefined);
+    setSelectedMood("");
+  }, [setSearchQuery, setSelectedMood, setDate]);
+
+  useEffect(() => {
+    setFilteredEntries(entries);
+  }, []);
+
+  return (
+    <div>
+      <div>
+        <div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-wrap w-full items-center gap-6"
+          >
+            <Input
+              placeholder="Search Entries..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full"
+            />
+            <Select value={selectMood} onValueChange={setSelectedMood}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Filter by mood" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(MOODS).map((mood) => (
+                  <SelectItem value={mood.id} key={mood.id}>
+                    <span className="flex items-center gap-2">
+                      {mood.emoji}
+                      {mood.label}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "justify-start text-left font-normal",
+                      !date && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon className="size-4" />
+                    {date ? format(date, "PPP") : <span>Pick a Date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                    showOutsideDays={false}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            {(searchQuery || selectMood || date) && (
+              <Button
+                onClick={handleClearFilters}
+                variant="ghost"
+                className="text-red-500"
+              >
+                Clear Filters
+              </Button>
+            )}
+          </form>
+        </div>
+        <div className="py-5">
+          <div className="flex items-center justify-between">
+            <h1>
+              Showing {filteredEntries?.length} of {entries.length}
+            </h1>
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                  size: "lg",
+                }),
+              )}
+              href="/journal/write"
+            >
+              <PlusIcon className="size-4" />
+              Add Entry
+            </Link>
+          </div>
+          <div>
+            {filteredEntries?.length === 0 ? (
+              <div className="text-center p-8">
+                <p className="text-gray-500">No Entries Found</p>
+              </div>
+            ) : (
+              <div className="py-5 flex flex-col gap-6">
+                {filteredEntries?.map((entry: SelectEntry) => (
+                  <EntryCard key={entry.id} id={entry.id} entry={entry} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

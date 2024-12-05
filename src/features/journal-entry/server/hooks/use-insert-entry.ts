@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AppURL } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -17,7 +17,8 @@ type RequestType = {
 };
 
 export const useInsertEntry = () => {
-  const mutation = useMutation<RequestType, Error, ResponseType>({
+  const queryClient = useQueryClient();
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (data) => {
       const response = await fetch(`${AppURL}/api/entry`, {
         method: "POST",
@@ -38,7 +39,11 @@ export const useInsertEntry = () => {
     },
     onSuccess: (data) => {
       toast.success("Entry added Successfully");
-      console.log(`Entry mutation data: ${data}`);
+      queryClient.invalidateQueries({
+        queryKey: ["entry", data.collectionId],
+        exact: true,
+      });
+      console.log(`Entry mutation data: ${data.collectionId}`);
     },
     onError: (error) => {
       toast.error(error.message);

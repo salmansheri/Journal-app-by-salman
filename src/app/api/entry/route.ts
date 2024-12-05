@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 import { entry } from "@/drizzle/schema";
 import { createId } from "@paralleldrive/cuid2";
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -67,6 +67,7 @@ export async function POST(request: Request) {
       .returning();
 
     revalidatePath("/dashboard");
+    revalidatePath("/collection/:id");
 
     return NextResponse.json({ data: insertEntry }, { status: 200 });
   } catch (error) {

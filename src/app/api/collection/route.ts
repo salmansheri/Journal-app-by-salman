@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { MOODS } from "@/lib/constant";
 import { db } from "@/lib/db";
-import { collections, draft, entry } from "@/drizzle/schema";
+import { collections } from "@/drizzle/schema";
 import { asc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/features/auth/lib/auth";
 import { headers } from "next/headers";
 import { createId } from "@paralleldrive/cuid2";
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

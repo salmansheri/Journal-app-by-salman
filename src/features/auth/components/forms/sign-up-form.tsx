@@ -19,32 +19,6 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
   const router = useRouter();
-  const signUp = async ({
-    email,
-    password,
-    name,
-  }: {
-    email: string;
-    password: string;
-    name: string;
-  }) => {
-    const authClient = await client.signUp.email(
-      {
-        email,
-        password,
-        name,
-      },
-      {
-        onSuccess: (ctx) => {
-          toast.success("successfully signin");
-          router.push("/");
-        },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-        },
-      },
-    );
-  };
 
   const form = useForm({
     defaultValues: {
@@ -58,11 +32,22 @@ export default function SignUpForm() {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
-      signUp({
-        email: value.email,
-        name: value.name,
-        password: value.password,
-      });
+      await client.signUp.email(
+        {
+          email: value.email,
+          password: value.password,
+          name: value.name,
+        },
+        {
+          onSuccess: () => {
+            toast.success("successfully signin");
+            router.push("/");
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message);
+          },
+        },
+      );
     },
   });
 

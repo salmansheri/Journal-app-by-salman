@@ -18,29 +18,6 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const router = useRouter();
-  const signIn = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    const authClient = await client.signIn.email(
-      {
-        email,
-        password,
-      },
-      {
-        onSuccess: (ctx) => {
-          toast.success("Successfully sign in");
-          router.push("/dashboard");
-        },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-        },
-      },
-    );
-  };
 
   const form = useForm({
     defaultValues: {
@@ -54,10 +31,21 @@ export default function SignInForm() {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
-      signIn({
-        email: value.email,
-        password: value.password,
-      });
+      await client.signIn.email(
+        {
+          email: value.email,
+          password: value.password,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Successfully sign in");
+            router.push("/dashboard");
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message);
+          },
+        },
+      );
     },
   });
 
@@ -137,7 +125,7 @@ export default function SignInForm() {
                   <Button type="submit" disabled={!canSubmit}>
                     {isSubmitting ? (
                       <>
-                        <Loader2 />
+                        <Loader2 className="animate-spin " />
                         Loading...
                       </>
                     ) : (

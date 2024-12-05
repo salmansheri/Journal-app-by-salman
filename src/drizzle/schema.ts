@@ -1,5 +1,4 @@
 import { text, pgTable, timestamp, integer } from "drizzle-orm/pg-core";
-import { randomUUID } from "crypto";
 
 export const collections = pgTable("collection", {
   id: text("id").primaryKey(),
