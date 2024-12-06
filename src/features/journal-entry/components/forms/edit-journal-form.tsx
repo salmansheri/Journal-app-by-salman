@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useSelectEntryById } from "../../server/hooks/use-select-entry-by-id";
 import NotFound from "@/app/not-found";
 import { useSelectCollectionById } from "@/features/collection/server/hooks/use-select-collection-by-id";
+import { useUpdateEntry } from "../../server/hooks/use-update-entry";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "title must be atleast 3 Character" }),
@@ -41,11 +42,11 @@ export default function EditJournalEntryForm({
   journalId,
 }: EditJournalEntryFormProps) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useAtom(isCollectionModalOpen);
+  const { mutate: updateEntry, isPending: isUpdateEntryPending } =
+    useUpdateEntry(journalId);
   const { data: initialData, isLoading: isInitialDataLoading } =
     useSelectEntryById(journalId);
   const [content, setContent] = useState<string>("");
-  const [mood, setMood] = useState(initialData?.mood);
 
   const form = useForm({
     defaultValues: {
@@ -56,6 +57,15 @@ export default function EditJournalEntryForm({
       onChange: formSchema,
     },
     onSubmit: async ({ value }) => {
+      updateEntry(
+        { title: value.title!, content: content },
+        {
+          onSuccess: () => {
+            router.refresh();
+            router.push("/dashboard");
+          },
+        },
+      );
       console.log({ value, content });
     },
   });
@@ -127,8 +137,11 @@ export default function EditJournalEntryForm({
             >
               {([canSubmit, isSubmitting]) => (
                 <div className="">
-                  <Button type="submit" disabled={!canSubmit}>
-                    {isSubmitting ? (
+                  <Button
+                    type="submit"
+                    disabled={!canSubmit || isUpdateEntryPending}
+                  >
+                    {isSubmitting || isUpdateEntryPending ? (
                       <>
                         <Loader2 className="mr-2 animate-spin size-4" />
                         Loading...
