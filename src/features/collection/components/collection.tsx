@@ -13,7 +13,9 @@ export default function Collection() {
   const { data: entriesData, isLoading: isEntriesLoading } = useSelectEntry();
 
   if (isCollectionsLoading || isEntriesLoading) {
-    return <Loader size={25} />;
+    return (
+      <Loader className="flex items-center justify-center h-full" size={25} />
+    );
   }
   return (
     <section>
