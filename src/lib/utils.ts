@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const AppURL = "http://localhost:3000";
+export const AppURL = process.env.NEXT_PUBLIC_APP_URL;
 
 export function timeAgo(createdAt: Date) {
   const now = new Date();

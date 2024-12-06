@@ -4,12 +4,14 @@ import { useSelectEntryById } from "../server/hooks/use-select-entry-by-id";
 import NotFound from "@/app/not-found";
 import { format } from "date-fns";
 import { EditIcon, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { isDeleteEntryModalOpen } from "@/features/collection/server/store";
 import { useAtom } from "jotai";
 import DeleteEntryModal from "./modals/delete-entry-modal";
 import { useDeleteEntry } from "../server/hooks/use-delete.entry";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface JournalIdClientProps {
   journalId: string;
@@ -59,10 +61,18 @@ export default function JournalIdClient({ journalId }: JournalIdClientProps) {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button className="text-blue-500" variant="ghost">
+            <Link
+              href={`/journal/${journalId}/edit`}
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                }),
+                "text-blue-500",
+              )}
+            >
               <EditIcon />
               Edit
-            </Button>
+            </Link>
             {isPending ? (
               <div>
                 <Loader size={12} />
