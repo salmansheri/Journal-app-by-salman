@@ -3,6 +3,7 @@ import type { Session } from "better-auth/types";
 import { NextResponse, type NextRequest } from "next/server";
 
 export default async function authMiddleware(request: NextRequest) {
+  const response = NextResponse.next();
   const { data: session } = await betterFetch<Session>(
     "/api/auth/get-session",
     {
@@ -13,11 +14,20 @@ export default async function authMiddleware(request: NextRequest) {
       },
     },
   );
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    "https://write-it-by-salman.netlify.app",
+  );
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, DELETE, PUT, PATCH",
+  );
+  response.headers.set("Access-Control-Allow-Credentials", "true");
 
   if (!session) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
