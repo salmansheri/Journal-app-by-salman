@@ -1,22 +1,17 @@
 import { betterFetch } from "@better-fetch/fetch";
 import type { Session } from "better-auth/types";
 import { NextResponse, type NextRequest } from "next/server";
+import { AppURL } from "./lib/utils";
 
 export default async function authMiddleware(request: NextRequest) {
   const url = new URL(request.url);
   const response = NextResponse.next();
   try {
-    const { data: session } = await betterFetch<Session>(
-      "/api/auth/get-session",
-      {
-        baseURL: "https://write-it-by-salman.vercel.app",
-        headers: {
-          //get the cookie from the request
-          cookie: request.headers.get("cookie") || "",
-        },
-        credentials: "include",
-      },
-    );
+    const response = await fetch(`${AppURL}/api/auth/get-session`);
+
+    const jsonResponse = await response.json();
+
+    const session = jsonResponse.data;
 
     if (!session) {
       return NextResponse.redirect(new URL("/sign-in", url.origin));
