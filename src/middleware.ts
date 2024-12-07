@@ -14,15 +14,6 @@ export default async function authMiddleware(request: NextRequest) {
       },
     },
   );
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    "https://write-it-by-salman.netlify.app",
-  );
-  response.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, DELETE, PUT, PATCH",
-  );
-  response.headers.set("Access-Control-Allow-Credentials", "true");
 
   if (!session) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
