@@ -10,7 +10,7 @@ export const AppURL = process.env.NEXT_PUBLIC_APP_URL;
 export function timeAgo(createdAt: Date) {
   const now = new Date();
   const past = new Date(createdAt);
-  // @ts-ignore
+  // @ts-expect-error "just ignore"
   const seconds = Math.floor((now - past) / 1000);
 
   let interval = Math.floor(seconds / 31536000);

@@ -14,7 +14,7 @@ export const Swiper = () => {
           <SwiperSlide key={t.id}>
             <div className="flex items-center justify-between px-24">
               <div className="w-[10%] h-[10%] rounded-full overflow-hidden">
-                <img src={t.src} />
+                <img src={t.src} alt={t.name} />
               </div>
               <div className=" pl-5 w-[90%] ">
                 <p className="text-balance">{t.words}</p>

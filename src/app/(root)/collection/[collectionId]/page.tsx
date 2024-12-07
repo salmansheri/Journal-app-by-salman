@@ -1,9 +1,7 @@
 import CollectionIdPageClient from "@/features/collection/components/collection-id-client";
 
 interface CollectionIdPageProps {
-  params: {
-    collectionId: string;
-  };
+  params: Promise<{ collectionId: string }>;
 }
 export default async function CollectionIdPage({
   params,

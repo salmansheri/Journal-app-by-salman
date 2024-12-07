@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: Request,
-  { params }: { params: { journalId: SelectEntry["id"] } },
+  { params }: { params: Promise<{ journalId: SelectEntry["id"] }> },
 ) {
   const { journalId } = await params;
   const session = await auth.api.getSession({
@@ -36,7 +36,7 @@ export async function GET(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { journalId: SelectEntry["id"] } },
+  { params }: { params: Promise<{ journalId: SelectEntry["id"] }> },
 ) {
   const { journalId } = await params;
   const session = await auth.api.getSession({
@@ -61,15 +61,13 @@ export async function DELETE(
 }
 export async function PUT(
   request: Request,
-  { params }: { params: { journalId: string } },
+  { params }: { params: Promise<{ journalId: string }> },
 ) {
   const { journalId } = await params;
   const data = await request.json();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-
-  console.log({ data });
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

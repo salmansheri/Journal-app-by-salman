@@ -9,7 +9,6 @@ import { isDeleteEntryModalOpen } from "@/features/collection/server/store";
 import { useAtom } from "jotai";
 import DeleteEntryModal from "./modals/delete-entry-modal";
 import { useDeleteEntry } from "../server/hooks/use-delete.entry";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +16,6 @@ interface JournalIdClientProps {
   journalId: string;
 }
 export default function JournalIdClient({ journalId }: JournalIdClientProps) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useAtom(isDeleteEntryModalOpen);
   const { data, isLoading } = useSelectEntryById(journalId);
 
@@ -88,6 +86,9 @@ export default function JournalIdClient({ journalId }: JournalIdClientProps) {
               </Button>
             )}
           </div>
+        </div>
+        <div className="my-5">
+          <div dangerouslySetInnerHTML={{ __html: data?.content || "" }} />
         </div>
       </div>
     </div>

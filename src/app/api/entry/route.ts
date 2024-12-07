@@ -6,6 +6,7 @@ import { auth } from "@/features/auth/lib/auth";
 import { headers } from "next/headers";
 import { entry } from "@/drizzle/schema";
 import { createId } from "@paralleldrive/cuid2";
+import { eq } from "drizzle-orm";
 
 export async function GET() {
   const session = await auth.api.getSession({
@@ -17,7 +18,10 @@ export async function GET() {
   }
 
   try {
-    const journalEntries = await db.select().from(entry);
+    const journalEntries = await db
+      .select()
+      .from(entry)
+      .where(eq(entry.userId, session?.user?.id));
 
     return NextResponse.json({ data: journalEntries }, { status: 200 });
   } catch (error) {
@@ -67,7 +71,7 @@ export async function POST(request: Request) {
       .returning();
 
     revalidatePath("/dashboard");
-    revalidatePath("/collection/:id");
+    revalidatePath(`/collection/${data?.collectionId}`);
 
     return NextResponse.json({ data: insertEntry }, { status: 200 });
   } catch (error) {

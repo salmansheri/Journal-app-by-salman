@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: Request,
-  { params }: { params: { collectionId: string } },
+  { params }: { params: Promise<{ collectionId: string }> },
 ) {
   const { collectionId } = await params;
   const session = auth.api.getSession({

@@ -4,7 +4,7 @@ import { useMemo, useCallback } from "react";
 import { isCollectionModalOpen } from "../server/store";
 import { useAtom } from "jotai";
 import { cn, timeAgo } from "@/lib/utils";
-import { ArrowRightIcon, FolderIcon, PlusIcon } from "lucide-react";
+import { FolderIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 interface CollectionPreviewProps {
   isCreateNew?: boolean;
@@ -68,23 +68,6 @@ export default function CollectionPreview({
         {totalEntries} {totalEntries === 1 ? "Entry" : "Entries"}
       </p>
       <p>{time}</p>
-      {filteredEntries?.length === 0 ? (
-        <p className="mt-3">No Collections Found</p>
-      ) : (
-        <>
-          <div className="mt-3">
-            {filteredEntries.map((entry) => (
-              <span
-                key={entry.id}
-                className="inline-flex items-center justify-between group  w-full cursor-pointer"
-              >
-                {entry.title}
-                <ArrowRightIcon className="group-hover:translate-x-1 transition-all duration-500 ease-in-out" />
-              </span>
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }

@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { client } from "@/features/auth/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
+import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -18,6 +20,8 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordType = showPassword === true ? "text" : "password";
   const router = useRouter();
 
   const form = useForm({
@@ -72,6 +76,7 @@ export default function SignUpForm() {
                   <div>
                     <Label>Name</Label>
                     <Input
+                      placeholder="Enter your Name..."
                       name="name"
                       type="text"
                       value={field.state.value}
@@ -97,6 +102,7 @@ export default function SignUpForm() {
                   <div className="">
                     <Label>Email</Label>
                     <Input
+                      placeholder="Enter your Password..."
                       name="email"
                       type="email"
                       value={field.state.value}
@@ -119,11 +125,11 @@ export default function SignUpForm() {
             <form.Field name="password">
               {(field) => {
                 return (
-                  <div>
+                  <div className="flex flex-col relative gap-2">
                     <Label>Password</Label>
                     <Input
-                      name="password"
-                      type="passwordj"
+                      type={passwordType}
+                      placeholder="Enter your Password..."
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                     />
@@ -135,6 +141,13 @@ export default function SignUpForm() {
                         {error}
                       </p>
                     ))}
+                    <div className=" absolute top-7 right-2">
+                      {showPassword ? (
+                        <EyeOffIcon onClick={() => setShowPassword(false)} />
+                      ) : (
+                        <EyeIcon onClick={() => setShowPassword(true)} />
+                      )}
+                    </div>
                   </div>
                 );
               }}

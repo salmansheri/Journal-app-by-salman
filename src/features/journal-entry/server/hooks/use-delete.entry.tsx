@@ -19,14 +19,12 @@ export const useDeleteEntry = () => {
 
       return result.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Entry delete Successfully");
       queryClient.invalidateQueries({ queryKey: ["entry"] });
-      console.log(`Entry mutation data: ${data}`);
     },
     onError: (error) => {
       toast.error(error.message);
-      console.log(error);
     },
   });
 

@@ -34,7 +34,6 @@ export default function CreateCollectionModal() {
       onChange: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
       insertCollection(
         // @ts-expect-error "something"
         { name: value.name, description: value.description },

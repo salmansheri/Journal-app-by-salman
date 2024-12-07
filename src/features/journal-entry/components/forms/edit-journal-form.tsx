@@ -10,25 +10,10 @@ import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { MOODS } from "@/lib/constant";
-import { useInsertEntry } from "../../server/hooks/use-insert-entry";
-import { useSelectCollection } from "@/features/collection/server/hooks/use-select-collection";
-import { SelectCollections } from "@/drizzle/schema";
 import CreateCollectionModal from "@/features/collection/components/modals/create-collection-modal";
-import { isCollectionModalOpen } from "@/features/collection/server/store";
-import { useAtom } from "jotai";
 import Loader from "@/components/loader";
 import { useRouter } from "next/navigation";
 import { useSelectEntryById } from "../../server/hooks/use-select-entry-by-id";
-import NotFound from "@/app/not-found";
-import { useSelectCollectionById } from "@/features/collection/server/hooks/use-select-collection-by-id";
 import { useUpdateEntry } from "../../server/hooks/use-update-entry";
 
 const formSchema = z.object({
@@ -66,7 +51,6 @@ export default function EditJournalEntryForm({
           },
         },
       );
-      console.log({ value, content });
     },
   });
 

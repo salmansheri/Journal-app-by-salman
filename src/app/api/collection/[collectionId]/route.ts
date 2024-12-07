@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: Request,
-  { params }: { params: { collectionId: string } },
+  { params }: { params: Promise<{ collectionId: string }> },
 ) {
   const { collectionId } = await params;
   console.log(collectionId);
@@ -36,9 +36,9 @@ export async function GET(
 }
 export async function DELETE(
   request: Request,
-  { params }: { params: { collectionId: string } },
+  { params }: { params: Promise<{ collectionId: string }> },
 ) {
-  const { collectionId } = params;
+  const { collectionId } = await params;
   console.log(collectionId);
   const session = await auth.api.getSession({
     headers: await headers(),

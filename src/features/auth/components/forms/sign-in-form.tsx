@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { client } from "@/features/auth/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email().min(3),
@@ -17,11 +19,12 @@ const formSchema = z.object({
 });
 
 export default function SignInForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordType = showPassword === true ? "text" : "password";
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -52,7 +55,7 @@ export default function SignInForm() {
   return (
     <Card className="md:w-[40%]">
       <CardHeader>
-        <CardTitle>Sign up</CardTitle>
+        <CardTitle>Sign in</CardTitle>
       </CardHeader>
       <CardContent>
         <form
@@ -70,6 +73,7 @@ export default function SignInForm() {
                   <div className="">
                     <Label>Email</Label>
                     <Input
+                      placeholder="Enter your Email..."
                       name="email"
                       type="email"
                       value={field.state.value}
@@ -92,11 +96,11 @@ export default function SignInForm() {
             <form.Field name="password">
               {(field) => {
                 return (
-                  <div>
+                  <div className="flex flex-col relative gap-2">
                     <Label>Password</Label>
                     <Input
-                      name="password"
-                      type="passwordj"
+                      type={passwordType}
+                      placeholder="Enter your Password..."
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                     />
@@ -108,6 +112,13 @@ export default function SignInForm() {
                         {error}
                       </p>
                     ))}
+                    <div className=" absolute top-7 right-2">
+                      {showPassword ? (
+                        <EyeOffIcon onClick={() => setShowPassword(false)} />
+                      ) : (
+                        <EyeIcon onClick={() => setShowPassword(true)} />
+                      )}
+                    </div>
                   </div>
                 );
               }}

@@ -26,7 +26,6 @@ import { isCollectionModalOpen } from "@/features/collection/server/store";
 import { useAtom } from "jotai";
 import Loader from "@/components/loader";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "title must be atleast 3 Character" }),

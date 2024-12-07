@@ -1,9 +1,9 @@
 import JournalIdClient from "@/features/journal-entry/components/journal-id-client";
 
 interface JournalIdPageProps {
-  params: {
+  params: Promise<{
     journalId: string;
-  };
+  }>;
 }
 
 export default async function JournalIdPage({ params }: JournalIdPageProps) {
