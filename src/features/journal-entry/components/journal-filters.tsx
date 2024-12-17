@@ -196,7 +196,7 @@ export default function JournalFilters({ entries }: JounalFiltersProps) {
       <Pagination
         totalPages={totalPages!}
         currentPage={currentPage}
-        onPageChange={handlePageChange}
+        onPageChangeAction={handlePageChange}
       />
     </div>
   );

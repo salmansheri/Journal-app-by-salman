@@ -42,7 +42,7 @@ export default function Features() {
       <div className="max-w-6xl mx-auto">
         <h1
           ref={headingRef}
-          className="text-7xl opacity-0  font-bold bg-gradient-to-r from-violet-500 via-violet-700 to-violet-900 bg-clip-text text-transparent text-balance py-5 text-center"
+          className="text-4xl lg:text-7xl opacity-0  font-bold bg-gradient-to-r from-violet-500 via-violet-700 to-violet-900 bg-clip-text text-transparent text-balance py-5 text-center"
         >
           Features
         </h1>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import "./globals.css";
 import "@fontsource/poppins";
 import Footer from "@/components/footer";
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` antialiased`}>
+      <body className={`antialiased`}>
         <ReactQueryProvider>
           <Header />
           <main className="min-h-screen">{children}</main>

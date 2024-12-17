@@ -49,7 +49,7 @@ export default function JournalIdClient({ journalId }: JournalIdClientProps) {
 
   return (
     <div className="py-5">
-      <DeleteEntryModal onDelete={handleDelete} />
+      <DeleteEntryModal onDeleteAction={handleDelete} />
       <div>
         <div className="flex items-center justify-between">
           <div>

@@ -58,7 +58,7 @@ export default function Hero() {
     <section className="h-screen" ref={containerRef}>
       <div>
         <div className="py-16 space-y-7">
-          <h1 className="hero__heading opacity-0 font-extrabold  z-10 text-6xl py-10 text-balance  text-center bg-gradient-to-r from-violet-500 via-violet-700 to-violet-950 bg-clip-text text-transparent">
+          <h1 className="hero__heading opacity-0 font-extrabold  z-10 text-4xl lg:text-6xl py-10 text-balance  text-center bg-gradient-to-r from-violet-500 via-violet-700 to-violet-950 bg-clip-text text-transparent">
             Your Journey Your Story Start Journaling Today
           </h1>
           <p className="hero__content text-violet-200 opacity-0 text-lg text-balance font-medium text-center ">

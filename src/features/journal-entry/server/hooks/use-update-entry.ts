@@ -13,7 +13,7 @@ type ResponseType = {
 
 export const useUpdateEntry = (journalId: string) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (data) => {
       const response = await fetch(`${AppURL}/api/entry/journal/${journalId}`, {
         method: "PUT",
@@ -25,7 +25,7 @@ export const useUpdateEntry = (journalId: string) => {
 
       if (!response.ok) {
         const errorMessage = response.statusText;
-        throw new Error(errorMessage || "An unknown error occured");
+        throw new Error(errorMessage || "An unknown error occurred");
       }
 
       const jsonResponse = await response.json();
@@ -33,8 +33,9 @@ export const useUpdateEntry = (journalId: string) => {
       return jsonResponse.data;
     },
     onSuccess: (data) => {
-      toast.success("Entry updated Successfully");
       queryClient.invalidateQueries({ queryKey: ["entry"] });
+      toast.success("Entry updated Successfully");
+
       console.log(`Entry mutation data: ${data}`);
     },
     onError: (error) => {
@@ -43,5 +44,5 @@ export const useUpdateEntry = (journalId: string) => {
     },
   });
 
-  return mutation;
+
 };

@@ -55,7 +55,7 @@ export default function CollectionIdPageClient({
   }
   return (
     <div>
-      {collection && <DeleteCollectionModal onDelete={handleDelete} />}
+      {collection && <DeleteCollectionModal onDeleteAction={handleDelete} />}
       <div className="flex items-center justify-between w-full my-5">
         <h1 className="gradient-title text-4xl font-bold">
           {collection?.name?.toUpperCase()}

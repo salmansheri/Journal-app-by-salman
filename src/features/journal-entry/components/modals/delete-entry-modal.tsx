@@ -15,15 +15,15 @@ import { useCallback } from "react";
 import { Trash } from "lucide-react";
 
 interface DeleteCollectionModalProps {
-  onDelete: () => void;
+  onDeleteAction: () => void;
 }
 
 export default function DeleteEntryModal({
-  onDelete,
+  onDeleteAction,
 }: DeleteCollectionModalProps) {
   const [isOpen, setIsOpen] = useAtom(isDeleteEntryModalOpen);
   const handleModalClose = useCallback(() => {
-    if (isOpen === false) {
+    if (!isOpen) {
       return;
     }
 
@@ -45,7 +45,7 @@ export default function DeleteEntryModal({
           <AlertDialogCancel className="border border-black text-black">
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction onClick={onDelete}>
+          <AlertDialogAction onClick={onDeleteAction}>
             <Trash />
             Delete
           </AlertDialogAction>

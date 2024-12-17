@@ -6,12 +6,19 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { client } from "@/features/auth/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email().min(3),
@@ -20,7 +27,7 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const passwordType = showPassword === true ? "text" : "password";
+  const passwordType = showPassword ? "text" : "password";
   const router = useRouter();
 
   const form = useForm({
@@ -133,7 +140,12 @@ export default function SignInForm() {
             >
               {([canSubmit, isSubmitting]) => (
                 <div className="">
-                  <Button type="submit" disabled={!canSubmit}>
+                  <Button
+                    size={"lg"}
+                    className={"w-full"}
+                    type="submit"
+                    disabled={!canSubmit}
+                  >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="animate-spin " />
@@ -148,6 +160,17 @@ export default function SignInForm() {
             </form.Subscribe>
           </div>
         </form>
+        <CardFooter>
+          <span className={"mt-2 text-center"}>
+            New To WriteIt
+            <Link
+              className={"hover:underline text-violet-500 "}
+              href={"/sign-out"}
+            >
+              Sign in
+            </Link>
+          </span>
+        </CardFooter>
       </CardContent>
     </Card>
   );

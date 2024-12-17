@@ -15,6 +15,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loader from "./loader";
+import MobileNav from "@/components/mobile-nav";
 
 export default function Header() {
   const [isMounted, setIsMounted] = useState(false);
@@ -80,10 +81,18 @@ export default function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex gap-6">
-                <Button onClick={() => router.push("/sign-in")}>Sign in</Button>
-                <Button onClick={() => router.push("/sign-up")}>Sign Up</Button>
-              </div>
+              <>
+                <MobileNav />
+
+                <div className="gap-6 hidden lg:flex">
+                  <Button onClick={() => router.push("/sign-in")}>
+                    Sign in
+                  </Button>
+                  <Button onClick={() => router.push("/sign-up")}>
+                    Sign Up
+                  </Button>
+                </div>
+              </>
             )}
           </div>
         )}

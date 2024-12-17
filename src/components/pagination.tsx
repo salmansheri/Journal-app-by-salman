@@ -6,30 +6,30 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  onPageChangeAction: (page: number) => void;
 }
 export default function Pagination({
   currentPage,
   totalPages,
-  onPageChange,
+  onPageChangeAction,
 }: PaginationProps) {
   const handlePrevClick = useCallback(() => {
     if (currentPage > 1) {
-      onPageChange(currentPage - 1);
+      onPageChangeAction(currentPage - 1);
     }
-  }, [currentPage, onPageChange]);
+  }, [currentPage, onPageChangeAction]);
 
   const handleNextClick = useCallback(() => {
     if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
+      onPageChangeAction(currentPage + 1);
     }
-  }, [currentPage, onPageChange, totalPages]);
+  }, [currentPage, onPageChangeAction, totalPages]);
 
   const handlePageClick = useCallback(
     (page: number) => {
-      onPageChange(page);
+      onPageChangeAction(page);
     },
-    [onPageChange],
+    [onPageChangeAction],
   );
 
   return (

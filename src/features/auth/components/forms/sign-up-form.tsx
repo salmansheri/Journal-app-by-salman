@@ -6,12 +6,14 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { client } from "@/features/auth/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import { ErrorContext } from "@better-fetch/fetch";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -21,7 +23,7 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const passwordType = showPassword === true ? "text" : "password";
+  const passwordType = showPassword ? "text" : "password";
   const router = useRouter();
 
   const form = useForm({
@@ -47,7 +49,7 @@ export default function SignUpForm() {
             toast.success("successfully signin");
             router.push("/");
           },
-          onError: (ctx) => {
+          onError: (ctx:ErrorContext) => {
             toast.error(ctx.error.message);
           },
         },
@@ -102,7 +104,7 @@ export default function SignUpForm() {
                   <div className="">
                     <Label>Email</Label>
                     <Input
-                      placeholder="Enter your Password..."
+                      placeholder="Enter your Email..."
                       name="email"
                       type="email"
                       value={field.state.value}
@@ -121,7 +123,7 @@ export default function SignUpForm() {
               }}
             </form.Field>
           </div>
-          <div>
+
             <form.Field name="password">
               {(field) => {
                 return (
@@ -152,7 +154,7 @@ export default function SignUpForm() {
                 );
               }}
             </form.Field>
-          </div>
+
           <div>
             <form.Subscribe
               selector={(formState) => [
@@ -162,7 +164,7 @@ export default function SignUpForm() {
             >
               {([canSubmit, isSubmitting]) => (
                 <div className="">
-                  <Button type="submit" disabled={!canSubmit}>
+                  <Button size="lg" className={"w-full"} type="submit" disabled={!canSubmit}>
                     {isSubmitting ? (
                       <>
                         <Loader2 className="animate-spin mr-2 size-4" />
@@ -177,6 +179,13 @@ export default function SignUpForm() {
             </form.Subscribe>
           </div>
         </form>
+        <CardFooter >
+          <span className={"mt-2"}>
+              Already Have an account? <Link className={"hover:underline text-violet-500"} href={"/sign-in"}>Sign in</Link>
+
+          </span>
+
+        </CardFooter>
       </CardContent>
     </Card>
   );
