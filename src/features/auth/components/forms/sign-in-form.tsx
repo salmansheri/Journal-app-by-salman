@@ -164,10 +164,10 @@ export default function SignInForm() {
           <span className={"mt-2 text-center"}>
             New To WriteIt
             <Link
-              className={"hover:underline text-violet-500 "}
-              href={"/sign-out"}
+              className={"hover:underline ml-2 text-violet-500 "}
+              href={"/sign-up"}
             >
-              Sign in
+              Sign up
             </Link>
           </span>
         </CardFooter>

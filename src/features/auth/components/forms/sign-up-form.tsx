@@ -6,7 +6,13 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { client } from "@/features/auth/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -49,7 +55,7 @@ export default function SignUpForm() {
             toast.success("successfully signin");
             router.push("/");
           },
-          onError: (ctx:ErrorContext) => {
+          onError: (ctx: ErrorContext) => {
             toast.error(ctx.error.message);
           },
         },
@@ -124,36 +130,33 @@ export default function SignUpForm() {
             </form.Field>
           </div>
 
-            <form.Field name="password">
-              {(field) => {
-                return (
-                  <div className="flex flex-col relative gap-2">
-                    <Label>Password</Label>
-                    <Input
-                      type={passwordType}
-                      placeholder="Enter your Password..."
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {field.state.meta.errors.map((error) => (
-                      <p
-                        className="text-red-500 font-bold"
-                        key={error as string}
-                      >
-                        {error}
-                      </p>
-                    ))}
-                    <div className=" absolute top-7 right-2">
-                      {showPassword ? (
-                        <EyeOffIcon onClick={() => setShowPassword(false)} />
-                      ) : (
-                        <EyeIcon onClick={() => setShowPassword(true)} />
-                      )}
-                    </div>
+          <form.Field name="password">
+            {(field) => {
+              return (
+                <div className="flex flex-col relative gap-2">
+                  <Label>Password</Label>
+                  <Input
+                    type={passwordType}
+                    placeholder="Enter your Password..."
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  {field.state.meta.errors.map((error) => (
+                    <p className="text-red-500 font-bold" key={error as string}>
+                      {error}
+                    </p>
+                  ))}
+                  <div className=" absolute top-7 right-2">
+                    {showPassword ? (
+                      <EyeOffIcon onClick={() => setShowPassword(false)} />
+                    ) : (
+                      <EyeIcon onClick={() => setShowPassword(true)} />
+                    )}
                   </div>
-                );
-              }}
-            </form.Field>
+                </div>
+              );
+            }}
+          </form.Field>
 
           <div>
             <form.Subscribe
@@ -164,7 +167,12 @@ export default function SignUpForm() {
             >
               {([canSubmit, isSubmitting]) => (
                 <div className="">
-                  <Button size="lg" className={"w-full"} type="submit" disabled={!canSubmit}>
+                  <Button
+                    size="lg"
+                    className={"w-full"}
+                    type="submit"
+                    disabled={!canSubmit}
+                  >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="animate-spin mr-2 size-4" />
@@ -179,12 +187,16 @@ export default function SignUpForm() {
             </form.Subscribe>
           </div>
         </form>
-        <CardFooter >
+        <CardFooter>
           <span className={"mt-2"}>
-              Already Have an account? <Link className={"hover:underline text-violet-500"} href={"/sign-in"}>Sign in</Link>
-
+            Already Have an account?{" "}
+            <Link
+              className={"hover:underline text-violet-500 mr-2"}
+              href={"/sign-in"}
+            >
+              Sign in
+            </Link>
           </span>
-
         </CardFooter>
       </CardContent>
     </Card>
