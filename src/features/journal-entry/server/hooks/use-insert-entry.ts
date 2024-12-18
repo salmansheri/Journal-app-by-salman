@@ -18,7 +18,7 @@ type RequestType = {
 
 export const useInsertEntry = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (data) => {
       const response = await fetch(`${AppURL}/api/entry`, {
         method: "POST",
@@ -41,7 +41,6 @@ export const useInsertEntry = () => {
       toast.success("Entry added Successfully");
       queryClient.invalidateQueries({
         queryKey: ["entry", data.collectionId],
-        exact: true,
       });
       console.log(`Entry mutation data: ${data.collectionId}`);
     },
@@ -50,6 +49,4 @@ export const useInsertEntry = () => {
       console.log(error);
     },
   });
-
-  return mutation;
 };

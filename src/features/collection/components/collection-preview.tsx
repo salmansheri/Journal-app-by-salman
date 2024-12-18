@@ -5,7 +5,8 @@ import { isCollectionModalOpen } from "../server/store";
 import { useAtom } from "jotai";
 import { cn, timeAgo } from "@/lib/utils";
 import { FolderIcon, PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+
+import Link from "next/link";
 interface CollectionPreviewProps {
   isCreateNew?: boolean;
   id?: string;
@@ -21,7 +22,6 @@ export default function CollectionPreview({
   entries = [],
   createdAt = new Date(),
 }: CollectionPreviewProps) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useAtom(isCollectionModalOpen);
   const time = timeAgo(createdAt);
 
@@ -54,20 +54,19 @@ export default function CollectionPreview({
   }
 
   return (
-    <div
-      onClick={() => router.push(`/collection/${id}`)}
-      className="bg-violet-950/40 backdrop-blur-xl backdrop-saturate-150 p-3 border border-violet-200/10 rounded-xl"
-    >
-      <div className=" flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <FolderIcon />
-          <h1 className="text-xl font-semibold">{name}</h1>
+    <Link href={`/collection/${id}`}>
+      <div className="bg-violet-950/40 backdrop-blur-xl backdrop-saturate-150 p-3 border border-violet-200/10 rounded-xl">
+        <div className=" flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <FolderIcon />
+            <h1 className="text-xl font-semibold">{name}</h1>
+          </div>
         </div>
+        <p className="text-sm text-violet-300">
+          {totalEntries} {totalEntries === 1 ? "Entry" : "Entries"}
+        </p>
+        <p>{time}</p>
       </div>
-      <p className="text-sm text-violet-300">
-        {totalEntries} {totalEntries === 1 ? "Entry" : "Entries"}
-      </p>
-      <p>{time}</p>
-    </div>
+    </Link>
   );
 }
