@@ -6,13 +6,23 @@ import Loader from "@/components/loader";
 import CollectionPreview from "./collection-preview";
 import CreateCollectionModal from "./modals/create-collection-modal";
 import { SelectCollections } from "@/drizzle/schema";
+import { useEffect } from "react";
 
 export default function Collection() {
   const { data: collections, isLoading: isCollectionsLoading } =
     useSelectCollection();
-  const { data: entriesData, isLoading: isEntriesLoading } = useSelectEntry();
+  const {
+    data: entriesData,
+    isLoading: isEntriesLoading,
+    refetch: refetchEntries,
+    isRefetching: isEntriesRefetching,
+  } = useSelectEntry();
 
-  if (isCollectionsLoading || isEntriesLoading) {
+  useEffect(() => {
+    refetchEntries();
+  }, [refetchEntries]);
+
+  if (isCollectionsLoading || isEntriesLoading || isEntriesRefetching) {
     return (
       <Loader className="flex items-center justify-center h-full" size={25} />
     );

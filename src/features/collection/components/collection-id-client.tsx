@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { isDeleteCollectionModalOpen } from "../server/store";
 import { useAtom } from "jotai";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDeleteCollection } from "../server/hooks/use-delete-collection-id";
 import JournalFilters from "@/features/journal-entry/components/journal-filters";
 
@@ -22,10 +22,23 @@ export default function CollectionIdPageClient({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useAtom(
     isDeleteCollectionModalOpen,
   );
-  const { data: collection, isLoading: isCollectionLoading } =
-    useSelectCollectionById(collectionId);
-  const { data: entries, isLoading: isEntriesLoading } =
-    useSelectEntryByCollectionId(collectionId);
+  const {
+    data: collection,
+    isLoading: isCollectionLoading,
+    refetch: refetchCollection,
+    isRefetching: isCollectionRefetching,
+  } = useSelectCollectionById(collectionId);
+  const {
+    data: entries,
+    isLoading: isEntriesLoading,
+    refetch: refetchEntries,
+    isRefetching: isEntriesRefetching,
+  } = useSelectEntryByCollectionId(collectionId);
+
+  useEffect(() => {
+    refetchCollection();
+    refetchEntries();
+  }, [refetchCollection, refetchEntries]);
 
   const handleAlert = useCallback(() => {
     if (isDeleteModalOpen) {
@@ -43,7 +56,12 @@ export default function CollectionIdPageClient({
     });
   };
 
-  if (isCollectionLoading || isEntriesLoading) {
+  if (
+    isCollectionLoading ||
+    isEntriesLoading ||
+    isEntriesRefetching ||
+    isCollectionRefetching
+  ) {
     return (
       <>
         <Loader
@@ -53,6 +71,7 @@ export default function CollectionIdPageClient({
       </>
     );
   }
+
   return (
     <div>
       {collection && <DeleteCollectionModal onDeleteAction={handleDelete} />}
